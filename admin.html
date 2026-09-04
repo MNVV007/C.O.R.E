@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>CORE — Admin</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+
+  <body class="admin-theme">
+    <header class="top-bar">
+      <img src="assets/logo.png.png" alt="CORE" class="logo" />
+
+      <button class="menu-button" id="menuButton" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+
+    <main class="main-content">
+      <!-- Same CORE watermark -->
+      <div class="watermark">
+        <img src="assets/20260812_223038.png" alt="CORE watermark" />
+      </div>
+
+      <section class="welcome-section">
+        <h2>Welcome to CORE</h2>
+        <p>Centralized Online Repository</p>
+      </section>
+
+      <section class="subjects-section">
+        <h3>Your Subjects</h3>
+
+        <div class="subjects-grid"></div>
+      </section>
+
+      <div class="admin-new-container">
+        <button class="admin-new-button" id="adminNewButton">
+          <i data-lucide="plus"></i>
+          <span>New</span>
+        </button>
+
+        <div class="admin-new-menu" id="adminNewMenu">
+          <button id="createFolderButton">
+            <i data-lucide="folder-plus"></i>
+            <span>Create New Folder</span>
+          </button>
+
+          <button id="uploadFileButton">
+            <i data-lucide="upload"></i>
+            <span>Upload File</span>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Admin menu -->
+    <nav class="side-menu" id="sideMenu">
+      <div class="menu-items">
+        <!-- Admin → Logout -->
+        <button class="menu-item" id="adminLogout">
+          <i data-lucide="log-out"></i>
+          <span>Logout</span>
+        </button>
+
+        <!-- Credits stays -->
+        <button class="menu-item" id="creditsButton">Credits</button>
+      </div>
+    </nav>
+
+    <!-- Credits Modal -->
+    <div class="credits-overlay" id="creditsOverlay">
+      <div class="credits-modal">
+        <button
+          class="credits-close"
+          id="creditsClose"
+          aria-label="Close credits"
+        >
+          &times;
+        </button>
+
+        <h2>C.O.R.E</h2>
+
+        <p class="credits-subtitle">Centralized Online Repository</p>
+
+        <p class="credits-developed">Developed by</p>
+
+        <p class="credits-name">M.N.V.V</p>
+
+        <p class="credits-with">
+          with Isha<span
+            class="credits-star"
+            id="creditsStar"
+            aria-label="With assistance"
+            role="button"
+            tabindex="0"
+            >*</span
+          >
+
+          <span class="credits-assistance" id="creditsAssistance">
+            with assistance
+          </span>
+        </p>
+
+        <p class="credits-year">© 2026 CORE</p>
+      </div>
+    </div>
+
+    <!-- Create Folder Modal -->
+    <div class="create-folder-overlay" id="createFolderOverlay">
+      <div class="create-folder-modal">
+        <button
+          class="create-folder-close"
+          id="createFolderClose"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+
+        <div class="create-folder-icon">
+          <i data-lucide="folder-plus"></i>
+        </div>
+
+        <h2>Create New Folder</h2>
+
+        <p>Enter a name for your new folder.</p>
+
+        <input
+          type="text"
+          id="folderNameInput"
+          placeholder="Folder name"
+          autocomplete="off"
+        />
+
+        <div class="create-folder-actions">
+          <button class="create-folder-cancel" id="createFolderCancel">
+            Cancel
+          </button>
+
+          <button class="create-folder-confirm" id="createFolderConfirm">
+            Create
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload File Modal -->
+    <div class="upload-file-overlay" id="uploadFileOverlay">
+      <div class="upload-file-modal">
+        <button
+          class="upload-file-close"
+          id="uploadFileClose"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+
+        <div class="upload-file-icon">
+          <i data-lucide="upload"></i>
+        </div>
+
+        <h2>Upload File</h2>
+
+        <p>Select a file to add to this folder.</p>
+
+        <label class="file-select-button" for="adminFileInput">
+          <i data-lucide="file-plus"></i>
+          <span>Select File</span>
+        </label>
+
+        <input
+          type="file"
+          id="adminFileInput"
+          accept=".pdf,.docx,.jpg,.jpeg,.png,.webp,.gif,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png,image/webp,image/gif"
+        />
+
+        <p class="selected-file-name" id="selectedFileName">No file selected</p>
+
+        <div class="upload-file-actions">
+          <button class="upload-file-cancel" id="uploadFileCancel">
+            Cancel
+          </button>
+
+          <button class="upload-file-confirm" id="uploadFileConfirm" disabled>
+            Upload
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="itemActionsOverlay" class="item-actions-overlay">
+      <div class="item-actions-popup">
+        <button id="renameItemButton" type="button">
+          <i data-lucide="pencil"></i>
+          <span>Rename</span>
+        </button>
+
+        <button id="deleteItemButton" type="button">
+          <i data-lucide="trash-2"></i>
+          <span>Delete</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="renameOverlay" class="rename-overlay">
+      <div class="rename-popup">
+        <h3>Rename</h3>
+
+        <input id="renameInput" type="text" autocomplete="off" />
+
+        <button id="renameConfirmButton" type="button">Rename</button>
+      </div>
+    </div>
+
+    <div id="deleteOverlay" class="delete-overlay">
+      <div class="delete-popup">
+        <h3>Delete Item?</h3>
+
+        <p id="deleteMessage">Are you sure you want to delete this item?</p>
+
+        <div id="deleteContents" class="delete-contents"></div>
+
+        <button id="deleteConfirmButton" type="button">Delete</button>
+      </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+      <i id="notificationIcon" data-lucide="check-circle"></i>
+      <span id="notificationMessage"></span>
+    </div>
+
+    <script src="js/admin.js"></script>
+  </body>
+</html>

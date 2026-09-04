@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CORE</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+
+  <body>
+    <header class="top-bar">
+      <img src="assets/logo.png.png" alt="CORE" class="logo" />
+
+      <button class="menu-button" id="menuButton" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+
+    <main class="main-content">
+      <div class="watermark">
+        <img src="assets/20260812_223038.png" alt="CORE watermark" />
+      </div>
+
+      <section class="welcome-section">
+        <h2>Welcome to CORE</h2>
+        <p>Centralized Online Repository</p>
+      </section>
+
+      <section class="subjects-section">
+        <h3>Your Subjects</h3>
+
+        <div class="subjects-grid"></div>
+      </section>
+    </main>
+
+    <nav class="side-menu" id="sideMenu">
+      <div class="menu-items">
+        <button class="menu-item" id="adminButton">Admin</button>
+        <button class="menu-item" id="creditsButton">Credits</button>
+      </div>
+    </nav>
+
+    <!-- Credits Modal -->
+    <div class="credits-overlay" id="creditsOverlay">
+      <div class="credits-modal">
+        <button
+          class="credits-close"
+          id="creditsClose"
+          aria-label="Close credits"
+        >
+          &times;
+        </button>
+
+        <h2>C.O.R.E</h2>
+        <p class="credits-subtitle">Centralized Online Repository</p>
+
+        <p class="credits-developed">Developed by</p>
+        <p class="credits-name">M.N.V.V</p>
+
+        <p class="credits-with">
+          with Isha<span
+            class="credits-star"
+            id="creditsStar"
+            aria-label="With assistance"
+            role="button"
+            tabindex="0"
+            >*</span
+          >
+
+          <span class="credits-assistance" id="creditsAssistance">
+            with assistance
+          </span>
+        </p>
+
+        <p class="credits-year">© 2026 CORE</p>
+      </div>
+    </div>
+    <!-- admin box forn hidden trigger -->
+
+    <div class="admin-code-overlay" id="adminCodeOverlay">
+      <div class="admin-code-box">
+        <button class="admin-code-close" id="adminCodeClose" aria-label="Close">
+          &times;
+        </button>
+
+        <div class="admin-lock-icon">
+          <i data-lucide="lock"></i>
+        </div>
+
+        M.N.<span class="admin-v-button" id="adminVButton">V</span>.V
+
+        <p class="admin-access-title">Administrative Access</p>
+        <p class="admin-access-subtitle">
+          <i data-lucide="ban"></i>
+          Restricted Access
+        </p>
+      </div>
+    </div>
+
+    <!-- Admin Login -->
+    <div class="admin-login-overlay" id="adminLoginOverlay">
+      <div class="admin-login-box">
+        <button
+          class="admin-login-close"
+          id="adminLoginClose"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+
+        <h2>Admin Login</h2>
+        <p>Enter your credentials to continue</p>
+
+        <form id="adminLoginForm">
+          <input
+            type="password"
+            id="adminPassword"
+            placeholder="Password"
+            autocomplete="current-password"
+            required
+          />
+
+          <button type="submit">Login</button>
+        </form>
+
+        <p class="admin-login-error" id="adminLoginError"></p>
+      </div>
+    </div>
+
+    <!-- Notification -->
+<div id="notification" class="notification">
+  <i id="notificationIcon" data-lucide="check-circle"></i>
+  <span id="notificationMessage"></span>
+</div>
+
+    <script src="js/app.js"></script>
+    <script src="js/viewer.js"></script>
+  </body>
+</html>
