@@ -126,6 +126,9 @@ const deleteMessage =
 const deleteConfirmButton =
   document.getElementById("deleteConfirmButton");
 
+const deleteAnimation =
+  document.getElementById("deleteAnimation");
+
 let selectedItem = null;
 
 let renameTarget = null;
@@ -559,6 +562,9 @@ deleteConfirmButton.addEventListener("click", async () => {
     return;
   }
 
+    deleteAnimation.style.display = "flex";
+    deleteConfirmButton.disabled = true;
+
   try {
 
     const response = await fetch(
@@ -610,6 +616,11 @@ deleteConfirmButton.addEventListener("click", async () => {
   "Unable to connect to the server.",
   "alert-circle"
 );
+  } finally {
+
+    deleteAnimation.style.display = "none";
+    deleteConfirmButton.disabled = false;
+
   }
 
 });
@@ -1148,6 +1159,9 @@ const adminFileInput =
 const selectedFileName =
   document.getElementById("selectedFileName");
 
+const uploadAnimation = 
+  document.getElementById("uploadAnimation");
+
 
 // Open upload modal
 
@@ -1221,6 +1235,8 @@ return;
 
   uploadFileConfirm.disabled = true;
 
+  uploadAnimation.style.display = "flex";
+
   try {
 
     const response = await fetch(
@@ -1240,6 +1256,7 @@ return;
   "Unable to upload file.",
   "alert-circle"
 );
+
       return;
     }
 
@@ -1268,6 +1285,7 @@ return;
   } finally {
 
     uploadFileConfirm.disabled = false;
+    uploadAnimation.style.display = "none";
 
   }
 

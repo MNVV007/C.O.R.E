@@ -231,27 +231,88 @@ downloadButton.addEventListener("click", (event) => {
   window.location.href = downloadUrl;
 });
 
-  // Open file
-  card.addEventListener("click", () => {
+  // Open 
+  
+  // edited for viewing docx
 
-    if (!item.storage_path) {
-      console.error(
-        "File storage path is missing."
-      );
+card.addEventListener("click", async () => {
+
+  if (!item.storage_path) {
+    console.error("File storage path is missing.");
+    return;
+  }
+
+  const fileUrl =
+    `${WORKER_URL}/file?path=${encodeURIComponent(
+      item.storage_path
+    )}`;
+
+  // DOCX → render inside CORE
+  if (item.storage_path.toLowerCase().endsWith(".docx")) {
+
+    const viewer =
+      document.getElementById("docx-viewer");
+
+    const content =
+      document.getElementById("docx-viewer-content");
+
+    if (!viewer || !content) {
+      console.error("DOCX viewer container is missing.");
       return;
     }
 
-    const fileUrl =
-      `${WORKER_URL}/file?path=${encodeURIComponent(
-        item.storage_path
-      )}`;
+    viewer.style.display = "block";
+    content.innerHTML = "Loading document...";
 
-    window.open(
-      fileUrl,
-      "_blank"
-    );
+    const title =
+  document.getElementById("docx-viewer-title");
 
-  });
+if (title) {
+  title.textContent = item.name;
+}
+
+    try {
+
+      const response =
+        await fetch(fileUrl);
+
+      if (!response.ok) {
+        throw new Error(
+          "Failed to fetch DOCX file."
+        );
+      }
+
+      const blob =
+        await response.blob();
+
+      content.innerHTML = "";
+
+      await docx.renderAsync(
+        blob,
+        content
+      );
+
+    } catch (error) {
+
+      console.error(
+        "DOCX rendering failed:",
+        error
+      );
+
+      content.textContent =
+        "Unable to display this document.";
+    }
+
+    return;
+  }
+
+  // Everything else → open normally
+  window.open(
+    fileUrl,
+    "_blank"
+  );
+
+});
 
   // Download file
   downloadIcon.addEventListener(
@@ -280,7 +341,6 @@ downloadButton.addEventListener("click", (event) => {
 
   subjectsGrid.appendChild(card);
 }
-
 
 
 function renderCurrentFolder() {
@@ -389,6 +449,236 @@ function setupBackButton() {
     .prepend(backButton);
 }
 
+// ============================================================
+// DOCX VIEWER MODULE
+// ============================================================
+
+const DOCX_VIEWER_CONFIG = {
+
+  // Existing CORE logo
+  logo: "assets/logo.png.png",
+
+  // Existing watermark
+  watermark: "assets/20260812_223038.png"
+
+};
+
+
+function setupDocxViewer() {
+
+  const viewer =
+    document.getElementById("docx-viewer");
+
+  const content =
+    document.getElementById("docx-viewer-content");
+
+  if (!viewer || !content) {
+    console.error("DOCX viewer elements are missing.");
+    return;
+  }
+
+
+  // ----------------------------------------------------------
+  // Viewer styling
+  // ----------------------------------------------------------
+
+  viewer.style.cssText = `
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    overflow-y: auto;
+    background: #f4f1ff;
+    padding-top: 64px;
+    box-sizing: border-box;
+  `;
+
+
+  content.style.cssText = `
+    position: relative;
+    z-index: 2;
+    width: min(900px, calc(100% - 30px));
+    margin: 25px auto;
+    padding: 30px;
+    box-sizing: border-box;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  `;
+
+
+  // ----------------------------------------------------------
+  // Header
+  // ----------------------------------------------------------
+
+  const header =
+    document.createElement("div");
+
+  header.id = "docx-viewer-header";
+
+  header.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    z-index: 10002;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 16px;
+    box-sizing: border-box;
+
+    background: #000;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  `;
+
+
+  // CORE logo + filename
+
+  const brand =
+    document.createElement("div");
+
+  brand.style.cssText = `
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-width: 0;
+  `;
+
+
+  const logo =
+    document.createElement("img");
+
+  logo.src =
+    DOCX_VIEWER_CONFIG.logo;
+
+  logo.alt = "CORE";
+
+  logo.style.cssText = `
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    flex-shrink: 0;
+  `;
+
+
+  const title =
+    document.createElement("span");
+
+  title.id =
+    "docx-viewer-title";
+
+  title.style.cssText = `
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  `;
+
+
+  brand.appendChild(logo);
+  brand.appendChild(title);
+
+
+  // Close button
+
+  const closeButton =
+    document.createElement("button");
+
+  closeButton.id =
+    "docx-viewer-close";
+
+  closeButton.type = "button";
+
+  closeButton.innerHTML =
+    `<i data-lucide="x"></i>`;
+
+  closeButton.style.cssText = `
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255 , 255, 255, 0.12);
+    color: #fff;
+    cursor: pointer;
+    flex-shrink: 0;
+  `;
+
+
+  header.appendChild(brand);
+  header.appendChild(closeButton);
+
+  viewer.appendChild(header);
+
+
+  // ----------------------------------------------------------
+  // Watermark
+  // ----------------------------------------------------------
+
+  const watermark =
+    document.createElement("img");
+
+  watermark.id =
+    "docx-viewer-watermark";
+
+  watermark.src =
+    DOCX_VIEWER_CONFIG.watermark;
+
+  watermark.alt = "";
+
+  watermark.style.cssText = `
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+
+  width: 65px;
+  height: auto;
+
+  opacity: 0.45;
+
+  display: block;
+  pointer-events: none;
+  user-select: none;
+
+  z-index: 10;
+`;
+
+  viewer.appendChild(watermark);
+
+
+  // ----------------------------------------------------------
+  // Close viewer
+  // ----------------------------------------------------------
+
+  closeButton.addEventListener("click", () => {
+
+    viewer.style.display = "none";
+
+    content.innerHTML = "";
+
+  });
+
+
+  lucide.createIcons();
+
+}
+
+
+// ============================================================
+// END DOCX VIEWER MODULE
+// ============================================================
+
 async function startViewer() {
 
   const loaded =
@@ -402,7 +692,11 @@ async function startViewer() {
 
   setupBackButton();
 
+  setupDocxViewer();
+
   lucide.createIcons();
 }
 
 startViewer();
+
+console.log("DOCX renderer:", typeof docx);
