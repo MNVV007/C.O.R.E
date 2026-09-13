@@ -26,6 +26,12 @@
         <img src="assets/20260812_223038.png" alt="CORE watermark" />
       </div>
 
+      <div class="announcement-ticker" id="announcementTicker">
+        <div class="announcement-ticker-track" id="announcementTickerTrack">
+          <span>Tip: Download DOCX files if they behave unusually.</span>
+        </div>
+      </div>
+
       <section class="welcome-section">
         <h2>Welcome to CORE</h2>
         <p>Centralized Online Repository</p>
@@ -134,21 +140,20 @@
     </div>
 
     <!-- Notification -->
-<div id="notification" class="notification">
-  <i id="notificationIcon" data-lucide="check-circle"></i>
-  <span id="notificationMessage"></span>
-</div>
+    <div id="notification" class="notification">
+      <i id="notificationIcon" data-lucide="check-circle"></i>
+      <span id="notificationMessage"></span>
+    </div>
 
-      <script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>
 
-      <script src="https://unpkg.com/docx-preview@0.4.0/dist/docx-preview.min.js"></script>
+    <script src="https://unpkg.com/docx-preview@0.4.0/dist/docx-preview.min.js"></script>
 
     <script src="js/app.js"></script>
     <script src="js/viewer.js"></script>
 
-    <div id="docx-viewer" style="display: none;">
-  <div id="docx-viewer-content"></div>
-</div>
-
+    <div id="docx-viewer" style="display: none">
+      <div id="docx-viewer-content"></div>
+    </div>
   </body>
 </html>

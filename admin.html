@@ -57,6 +57,54 @@
           </button>
         </div>
       </div>
+
+      <section class="announcements-admin" id="announcementsAdmin">
+        <div class="announcements-admin-header">
+          <div>
+            <h3>Announcements</h3>
+            <p>Share a message with CORE users.</p>
+          </div>
+
+          <i data-lucide="megaphone"></i>
+        </div>
+
+        <div class="announcement-form">
+          <textarea
+            id="announcementMessageInput"
+            rows="3"
+            maxlength="300"
+            placeholder="Write an announcement..."
+          ></textarea>
+
+          <div class="announcement-duration">
+            <span>Duration</span>
+
+            <label>
+              <input
+                type="radio"
+                name="announcementDuration"
+                value="24"
+                checked
+              />
+              <span>24 hours</span>
+            </label>
+
+            <label>
+              <input type="radio" name="announcementDuration" value="48" />
+              <span>48 hours</span>
+            </label>
+          </div>
+
+          <button id="addAnnouncementButton" type="button">
+            <i data-lucide="plus"></i>
+            <span>Add Announcement</span>
+          </button>
+        </div>
+
+        <div class="announcement-list" id="announcementList">
+          <!-- Active announcements will appear here -->
+        </div>
+      </section>
     </main>
 
     <!-- Admin menu -->
@@ -182,8 +230,8 @@
         <p class="selected-file-name" id="selectedFileName">No file selected</p>
 
         <div class="upload-animation" id="uploadAnimation">
-  <img src="assets/loading.png" alt="Uploading">
-</div>
+          <img src="assets/loading.png" alt="Uploading" />
+        </div>
 
         <div class="upload-file-actions">
           <button class="upload-file-cancel" id="uploadFileCancel">
@@ -229,10 +277,9 @@
 
         <div id="deleteContents" class="delete-contents"></div>
 
-            <div class="delete-animation" id="deleteAnimation">
-      <img src="assets/loading.png" alt="Deleting">
-    </div>
-
+        <div class="delete-animation" id="deleteAnimation">
+          <img src="assets/loading.png" alt="Deleting" />
+        </div>
 
         <button id="deleteConfirmButton" type="button">Delete</button>
       </div>

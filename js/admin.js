@@ -129,6 +129,14 @@ const deleteConfirmButton =
 const deleteAnimation =
   document.getElementById("deleteAnimation");
 
+  const announcementMessageInput = document.getElementById(
+  "announcementMessageInput"
+);
+const addAnnouncementButton = document.getElementById(
+  "addAnnouncementButton"
+);
+const announcementList = document.getElementById("announcementList");
+
 let selectedItem = null;
 
 let renameTarget = null;
@@ -177,6 +185,158 @@ function showNotification(message, icon = "check-circle") {
   notificationTimer = setTimeout(() => {
     notification.classList.remove("show");
   }, 2500);
+}
+
+// announcement
+
+function escapeHtml(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+addAnnouncementButton.addEventListener("click", addAnnouncement);
+
+async function loadAnnouncements() {
+  try {
+    const response = await fetch(`${WORKER_URL}/announcements`);
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.error || "Failed to load announcements");
+    }
+
+    announcementList.innerHTML = "";
+
+    if (!result.announcements.length) {
+      announcementList.innerHTML = `
+        <p class="no-announcements">
+          No active announcements.
+        </p>
+      `;
+      return;
+    }
+
+    result.announcements.forEach((announcement) => {
+      const item = document.createElement("div");
+      item.className = "announcement-item";
+
+      const expiresAt = new Date(announcement.expires_at);
+      const expiresText = expiresAt.toLocaleString([], {
+        dateStyle: "medium",
+        timeStyle: "short"
+      });
+
+      item.innerHTML = `
+        <div class="announcement-item-content">
+          <p>${escapeHtml(announcement.message)}</p>
+          <small>Expires: ${expiresText}</small>
+        </div>
+
+        <button
+          class="delete-announcement-button"
+          type="button"
+          data-id="${announcement.id}"
+          aria-label="Delete announcement"
+        >
+          <i data-lucide="trash-2"></i>
+        </button>
+      `;
+
+      announcementList.appendChild(item);
+    });
+
+    lucide.createIcons();
+
+    document.querySelectorAll(".delete-announcement-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        deleteAnnouncement(button.dataset.id);
+      });
+    });
+  } catch (error) {
+    console.error("Load announcements failed:", error);
+
+    announcementList.innerHTML = `
+      <p class="no-announcements">
+        Failed to load announcements.
+      </p>
+    `;
+  }
+}
+
+async function addAnnouncement() {
+  const message = announcementMessageInput.value.trim();
+
+  const duration = document.querySelector(
+    'input[name="announcementDuration"]:checked'
+  )?.value;
+
+  if (!message) {
+    showNotification("Please enter an announcement.", "megaphone");
+    return;
+  }
+
+  addAnnouncementButton.disabled = true;
+
+  try {
+    const response = await fetch(`${WORKER_URL}/create-announcement`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message,
+        duration
+      })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.error || "Failed to create announcement");
+    }
+
+    announcementMessageInput.value = "";
+
+    showNotification("Announcement added.", "check-circle");
+
+    await loadAnnouncements();
+  } catch (error) {
+    console.error("Add announcement failed:", error);
+    showNotification("Failed to add announcement.", "circle-alert");
+  } finally {
+    addAnnouncementButton.disabled = false;
+  }
+}
+
+async function deleteAnnouncement(id) {
+  try {
+    const response = await fetch(`${WORKER_URL}/delete-announcement`, {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ id })
+    });
+
+    const result = await response.json();
+
+if (!response.ok || !result.success) {
+  throw new Error(result.error || "Failed to create announcement");
+}
+    showNotification("Announcement deleted.", "trash-2");
+
+    await loadAnnouncements();
+  } catch (error) {
+    console.error("Delete announcement failed:", error);
+     showNotification(
+    error.message || "Failed to add announcement.",
+    "circle-alert"
+  );
+  }
 }
 
 
@@ -1333,6 +1493,8 @@ async function startAdminPage() {
   renderCurrentFolder();
 
   setupBackButton();
+  
+  await loadAnnouncements();
 
   lucide.createIcons();
 }

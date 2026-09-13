@@ -9,6 +9,8 @@ const welcomeTitle = document.querySelector(".welcome-section h2");
 const welcomeSubtitle = document.querySelector(".welcome-section p");
 const sectionTitle = document.querySelector(".subjects-section h3");
 const subjectsGrid = document.querySelector(".subjects-grid");
+const announcementTicker =document.getElementById("announcementTicker");
+const announcementTickerTrack =document.getElementById("announcementTickerTrack");
 
 let coreData = {
   type: "folder",
@@ -680,6 +682,58 @@ function setupDocxViewer() {
 // END DOCX VIEWER MODULE
 // ============================================================
 
+// announcement
+async function loadAnnouncements() {
+  if (!announcementTicker || !announcementTickerTrack) {
+    return;
+  }
+
+  const fallback =
+    "Tip: Download DOCX files if they behave unusually.";
+
+  try {
+    const response =
+      await fetch(`${WORKER_URL}/announcements`);
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(
+        result.message || "Failed to load announcements."
+      );
+    }
+
+    const announcements =
+      result.announcements || [];
+
+    const messages = announcements.length
+      ? announcements.map(item => item.message)
+      : [fallback];
+
+    announcementTickerTrack.innerHTML = "";
+
+    const span = document.createElement("span");
+    span.textContent = messages.join(" • ");
+
+    announcementTickerTrack.appendChild(span);
+
+  } catch (error) {
+    console.error(
+      "Announcements load failed:",
+      error
+    );
+
+    announcementTickerTrack.innerHTML = "";
+
+    const span = document.createElement("span");
+    span.textContent = fallback;
+
+    announcementTickerTrack.appendChild(span);
+  }
+}
+
+
+// start viewer
 async function startViewer() {
 
   const loaded =
@@ -688,6 +742,8 @@ async function startViewer() {
   if (!loaded) {
     return;
   }
+
+  await loadAnnouncements();
 
   renderCurrentFolder();
 

@@ -1853,7 +1853,7 @@ body.admin-theme .notification i {
   }
 
   #docx-viewer-content .docx {
-    padding: 30px !important;
+    padding: 15px !important;
     zoom: 0.60;
     margin-left: auto !important;
     margin-right: auto !important;
@@ -1863,5 +1863,261 @@ body.admin-theme .notification i {
   #docx-viewer-content .docx span,
   #docx-viewer-content .docx div {
     font-size: 95% !important;
+  }
+}
+
+/* ================================
+   ADMIN ANNOUNCEMENTS
+   ================================ */
+
+.announcements-admin {
+  width: 100%;
+  max-width: 900px;
+  margin: 60px auto 40px;
+  padding: 22px;
+  border-radius: 18px;
+  box-sizing: border-box;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.announcements-admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 18px;
+}
+
+.announcements-admin-header h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.announcements-admin-header p {
+  margin: 5px 0 0;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.announcements-admin-header > svg {
+  width: 22px;
+  height: 22px;
+}
+
+.announcement-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#announcementMessageInput {
+  width: 100%;
+  min-height: 90px;
+  padding: 13px;
+  box-sizing: border-box;
+
+  resize: vertical;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  background: rgba(0, 0, 0, 0.15);
+  color: inherit;
+  font: inherit;
+  outline: none;
+}
+
+#announcementMessageInput:focus {
+  border-color: rgba(160, 100, 255, 0.7);
+}
+
+.announcement-duration {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+
+  font-size: 14px;
+}
+
+.announcement-duration > span {
+  opacity: 0.7;
+}
+
+.announcement-duration label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+#addAnnouncementButton {
+  align-self: flex-start;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+
+  cursor: pointer;
+  font: inherit;
+
+  background: #72102d;
+  color: white;
+}
+
+#addAnnouncementButton svg {
+  width: 17px;
+  height: 17px;
+}
+
+#addAnnouncementButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.announcement-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.no-announcements {
+  margin: 0;
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+/* Individual announcement */
+
+.announcement-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  padding: 14px;
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.announcement-item-content {
+  min-width: 0;
+}
+
+.announcement-item-content p {
+  margin: 0 0 6px;
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.announcement-item-content small {
+  font-size: 11px;
+  opacity: 0.55;
+}
+
+.delete-announcement-button {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  border: none;
+  border-radius: 9px;
+
+  cursor: pointer;
+  background: transparent;
+}
+
+.delete-announcement-button svg {
+  width: 17px;
+  height: 17px;
+}
+
+@media (max-width: 600px) {
+  .announcements-admin {
+    margin: 40px 0 30px;
+    padding: 18px;
+    border-radius: 15px;
+  }
+
+  .announcements-admin-header h3 {
+    font-size: 18px;
+  }
+
+  .announcement-duration {
+    gap: 10px;
+  }
+
+  #addAnnouncementButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .announcement-item {
+    align-items: flex-start;
+  }
+}
+
+/* ================================
+   ANNOUNCEMENT TICKER
+   ================================ */
+
+.announcement-ticker {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 25px;
+  padding: 8px 0;
+  color:#000;
+
+  overflow: hidden;
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.announcement-ticker-track {
+  display: inline-flex;
+  white-space: nowrap;
+
+  padding-left: 100%;
+  animation: announcementScroll 18s linear infinite;
+}
+
+.announcement-ticker-track span {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+@keyframes announcementScroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@media (max-width: 600px) {
+  .announcement-ticker {
+    margin-bottom: 20px;
+    padding: 7px 0;
+  }
+
+  .announcement-ticker-track span {
+    font-size: 12px;
   }
 }
