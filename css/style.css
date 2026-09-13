@@ -1837,3 +1837,31 @@ body.admin-theme .notification i {
     opacity: 0.65;
   }
 }
+
+
+/* docx for mobile  */
+@media (max-width: 600px) {
+
+  #docx-viewer-content {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  #docx-viewer-content .docx-wrapper {
+    width: 100% !important;
+    padding: 10px 0 !important;
+  }
+
+  #docx-viewer-content .docx {
+    padding: 30px !important;
+    zoom: 0.60;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  #docx-viewer-content .docx p,
+  #docx-viewer-content .docx span,
+  #docx-viewer-content .docx div {
+    font-size: 95% !important;
+  }
+}

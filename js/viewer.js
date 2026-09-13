@@ -287,10 +287,11 @@ if (title) {
 
       content.innerHTML = "";
 
-      await docx.renderAsync(
-        blob,
-        content
-      );
+      await docx.renderAsync(blob, content, null, {
+  ignoreWidth: true,
+  ignoreHeight: true
+});
+
 
     } catch (error) {
 
